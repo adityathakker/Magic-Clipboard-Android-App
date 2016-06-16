@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.adityathakker.copyactions.activities.PopupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/activity_popup_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:drawableTint="@color/popupColor"
+            android:drawableTop="@drawable/ic_share_black_48dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="Share"
+            android:textColor="@color/popupColor" />
+
+        <TextView
+            android:id="@+id/activity_popup_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/activity_popup_share"
+            android:layout_weight="1"
+            android:drawableTint="@color/popupColor"
+            android:drawableTop="@drawable/ic_search_black_48dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="Search"
+            android:textColor="@color/popupColor" />
+
+        <TextView
+            android:id="@+id/activity_popup_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/activity_popup_search"
+            android:layout_weight="1"
+            android:drawableTint="@color/popupColor"
+            android:drawableTop="@drawable/ic_near_me_black_48dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="Map"
+            android:textColor="@color/popupColor" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/activity_popup_translate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/activity_popup_map"
+            android:layout_weight="1"
+            android:drawableTint="@color/popupColor"
+            android:drawableTop="@drawable/ic_translate_black_48dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="Translate"
+            android:textColor="@color/popupColor" />
+
+        <TextView
+            android:id="@+id/activity_popup_speak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/activity_popup_translate"
+            android:layout_weight="1"
+            android:drawableTint="@color/popupColor"
+            android:drawableTop="@drawable/ic_volume_up_black_48dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="Speak"
+            android:textColor="@color/popupColor" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
