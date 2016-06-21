@@ -10,7 +10,8 @@ public abstract class AppConst {
 
     public static class DB {
         //DB Name
-        public static final String DB_NAME = "copy_actions";
+        public static final String DB_NAME = "copy_actions.db";
+        public static final String DB_PATH = "/data/data/com.adityathakker.copyactions/databases/";
         public static final int DB_VERSION = 1;
 
         //History Table

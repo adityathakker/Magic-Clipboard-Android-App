@@ -19,6 +19,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private Context context;
+    private SQLiteDatabase sqLiteDatabase;
 
     public DatabaseHelper(Context context) {
         super(context, AppConst.DB.DB_NAME, null, AppConst.DB.DB_VERSION);
@@ -27,26 +28,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(AppConst.DB.CREATE_TABLE_HISTORY);
+        Log.d(TAG, "onCreate was Called: " + db.getPath());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(AppConst.DB.DROP_TABLE_HISTORY);
-        onCreate(db);
+        /*db.execSQL(AppConst.DB.DROP_TABLE_HISTORY);
+        onCreate(db);*/
+        Log.d(TAG, "onUpgrade was Called");
+
     }
 
+    public void openDatabase() {
+        String dbPath = context.getDatabasePath(AppConst.DB.DB_NAME).getPath();
+        if (sqLiteDatabase != null && sqLiteDatabase.isOpen()) {
+            return;
+        } else {
+            sqLiteDatabase = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READWRITE);
+        }
+    }
+
+    public void closeDatabase() {
+        if (sqLiteDatabase != null) {
+            sqLiteDatabase.close();
+        }
+    }
+
+
+
     public Boolean insertNewCopyRecord(String copiedString) {
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        openDatabase();
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String stringDate = sdf.format(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String stringDate = simpleDateFormat.format(date);
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(AppConst.DB.HISTORY_STRING, copiedString);
         contentValues.put(AppConst.DB.HISTORY_TIMESTAMP, stringDate);
         contentValues.put(AppConst.DB.HISTORY_IS_FAV, 0);
+
         long id = sqLiteDatabase.insert(AppConst.DB.HISTORY_TABLE_NAME, null, contentValues);
-        sqLiteDatabase.close();
+        closeDatabase();
         if (id == -1) {
             return false;
         }
@@ -54,9 +76,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Boolean removedCopyRecord(long id) {
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        openDatabase();
         long row = sqLiteDatabase.delete(AppConst.DB.HISTORY_TABLE_NAME, "id=?", new String[]{Long.toString(id)});
-        sqLiteDatabase.close();
+        close();
         if (row == -1) {
             return false;
         }
@@ -64,11 +86,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Boolean markAsFavorite(CopyRecord copyRecord) {
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        openDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(AppConst.DB.HISTORY_IS_FAV, 1);
+
         long id = sqLiteDatabase.update(AppConst.DB.HISTORY_TABLE_NAME, contentValues, "id=?", new String[]{Long.toString(copyRecord.getId())});
-        sqLiteDatabase.close();
+        closeDatabase();
         if (id == -1) {
             return false;
         } else {
@@ -77,11 +100,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Boolean removeFromFavorite(CopyRecord copyRecord) {
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        openDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(AppConst.DB.HISTORY_IS_FAV, 0);
         long id = sqLiteDatabase.update(AppConst.DB.HISTORY_TABLE_NAME, contentValues, "id=?", new String[]{Long.toString(copyRecord.getId())});
-        sqLiteDatabase.close();
+        closeDatabase();
         if (id == -1) {
             return false;
         } else {
@@ -91,7 +114,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<CopyRecord> getAllCopyRecords() {
         List<CopyRecord> copyRecordList = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        openDatabase();
+        CopyRecord tempCopyRecord = null;
         Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, null, null, null, null, AppConst.DB.HISTORY_TIMESTAMP + " DESC");
         if (resultSet.moveToFirst()) {
             do {
@@ -100,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String string = resultSet.getString(1);
                     Date timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString(3));
                     Boolean isFav = resultSet.getInt(2) == 1;
-                    CopyRecord tempCopyRecord = new CopyRecord(id, string, timeStamp, isFav);
+                    tempCopyRecord = new CopyRecord(id, string, timeStamp, isFav);
                     copyRecordList.add(tempCopyRecord);
                     Log.d(TAG, "getAllCopyRecords: Adding Record => " + tempCopyRecord.getString());
                 } catch (ParseException e) {
@@ -111,18 +135,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (resultSet != null && !resultSet.isClosed()) {
             resultSet.close();
         }
-        sqLiteDatabase.close();
+        closeDatabase();
         return copyRecordList;
     }
 
     public Boolean isMarkedFav(long id) {
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        openDatabase();
         Cursor results = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, new String[]{AppConst.DB.HISTORY_IS_FAV}, "id=?", new String[]{Long.toString(id)}, null, null, null);
         int isFav = 0;
         if (results.moveToFirst()) {
             isFav = Integer.parseInt(results.getString(2));
         }
-        sqLiteDatabase.close();
+        closeDatabase();
         if (isFav == 0) {
             return false;
         } else {
@@ -131,32 +155,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public CopyRecord getLatestCopyRecord() {
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        openDatabase();
         Cursor result = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, null, null, null, null, AppConst.DB.HISTORY_TIMESTAMP + " DESC", "1");
         if (result.moveToFirst()) {
             try {
                 CopyRecord copyRecord = new CopyRecord(result.getInt(0), result.getString(1), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(result.getString(3)), Boolean.parseBoolean(result.getString(2)));
-                sqLiteDatabase.close();
+                closeDatabase();
                 return copyRecord;
             } catch (ParseException e) {
                 e.printStackTrace();
-                sqLiteDatabase.close();
+                closeDatabase();
                 return null;
             }
         } else {
-            sqLiteDatabase.close();
+            closeDatabase();
             return null;
         }
     }
 
     public List<CopyRecord> getAllFavorites() {
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        openDatabase();
         List<CopyRecord> tempCopyRecordList = new ArrayList<>();
         Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, AppConst.DB.HISTORY_IS_FAV + "=?", new String[]{"1"}, null, null, AppConst.DB.HISTORY_TIMESTAMP + " DESC");
+        CopyRecord copyRecord = null;
         try {
             if (resultSet.moveToFirst()) {
                 do {
-                    CopyRecord copyRecord = new CopyRecord(resultSet.getInt(0), resultSet.getString(1), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString(3)), Boolean.parseBoolean(resultSet.getString(2)));
+                    copyRecord = new CopyRecord(resultSet.getInt(0), resultSet.getString(1), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString(3)), Boolean.parseBoolean(resultSet.getString(2)));
                     tempCopyRecordList.add(copyRecord);
                 } while (resultSet.moveToNext());
             } else {
@@ -165,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return tempCopyRecordList;
         } catch (ParseException e) {
             e.printStackTrace();
-            sqLiteDatabase.close();
+            closeDatabase();
             return null;
         }
     }
