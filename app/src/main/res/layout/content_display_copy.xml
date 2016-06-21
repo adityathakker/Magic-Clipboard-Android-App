@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.activities.DisplayCopyActivity"
+    tools:showIn="@layout/activity_display_copy">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/content_display_copy_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:text="Small Text"
+            android:textColor="@color/secondaryText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/content_display_copy_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/content_display_copy_timestamp"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="Medium Text"
+            android:textColor="@color/primaryText"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/content_display_copy_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/content_display_copy_string"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/content_display_copy_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_display_copy_divider"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/content_display_copy_button_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_favorite_border_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/popupColor"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="Favorite" />
+
+            <TextView
+                android:id="@+id/content_display_copy_button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_delete_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/popupColor"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="Delete" />
+
+            <TextView
+                android:id="@+id/content_display_copy_button_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_share_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/popupColor"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="Share" />
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/content_display_copy_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/content_display_copy_menu"
+            android:background="@color/divider" />
+    </RelativeLayout>
+</ScrollView>

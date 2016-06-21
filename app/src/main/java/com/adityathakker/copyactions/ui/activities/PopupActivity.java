@@ -1,4 +1,4 @@
-package com.adityathakker.copyactions.activities;
+package com.adityathakker.copyactions.ui.activities;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.adityathakker.copyactions.R;
 import com.adityathakker.copyactions.database.DatabaseHelper;
+import com.adityathakker.copyactions.models.CopyRecord;
+import com.adityathakker.copyactions.ui.fragments.HistoryFragment;
 
 public class PopupActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView share, search, map, translate, speak;
@@ -27,6 +29,13 @@ public class PopupActivity extends AppCompatActivity implements View.OnClickList
         copiedString = getIntent().getStringExtra("copiedString");
         databaseHelper.insertNewCopyRecord(copiedString);
         databaseHelper.close();
+
+        CopyRecord latestCopyRecord = databaseHelper.getLatestCopyRecord();
+        if (HistoryFragment.historyRecyclerAdapter != null) {
+            HistoryFragment.historyRecyclerAdapter.addCopyRecordToList(latestCopyRecord, 0);
+            HistoryFragment.historyRecyclerAdapter.notifyItemInserted(0);
+        }
+
 
         share = (TextView) findViewById(R.id.activity_popup_share);
         share.setOnClickListener(this);

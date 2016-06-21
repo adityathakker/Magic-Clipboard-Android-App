@@ -2,10 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="8dp">
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/history_recyclerview_row_timestamp"
@@ -14,6 +11,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:text="Small Text"
         android:textColor="@color/secondaryText"
         android:textSize="14sp" />
@@ -25,21 +24,29 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/history_recyclerview_row_timestamp"
+        android:layout_toLeftOf="@+id/history_recyclerview_row_info"
+        android:layout_toStartOf="@+id/history_recyclerview_row_info"
         android:ellipsize="end"
         android:maxLines="4"
         android:minLines="1"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
         android:text="Medium Text"
         android:textColor="@color/primaryText"
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/history_recyclerview_row_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/history_recyclerview_row_string"
         android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/history_recyclerview_row_timestamp"
         android:layout_centerVertical="true"
-        android:alpha="0.8"
+        android:alpha="0.6"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:src="@drawable/ic_info_black_24dp"
         android:tint="@color/secondaryText" />
 

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".ui.activities.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,17 +24,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.PopupActivity"
-            android:theme="@style/PopupTheme"></activity>
+            android:name=".ui.activities.PopupActivity"
+            android:theme="@style/PopupTheme" />
 
-        <service android:name="com.adityathakker.copyactions.services.ClipboardService" />
+        <service android:name=".services.ClipboardService" />
 
-        <receiver android:name="com.adityathakker.copyactions.receivers.ClipboardMonitorStarter">
+        <receiver android:name=".receivers.ClipboardMonitorStarter">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".ui.activities.DisplayCopyActivity"
+            android:label="@string/title_activity_display_copy"
+            android:parentActivityName=".ui.activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,10 +1,7 @@
-package com.adityathakker.copyactions.activities;
+package com.adityathakker.copyactions.ui.activities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,19 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
-import com.adityathakker.copyactions.AppConst;
 import com.adityathakker.copyactions.R;
-import com.adityathakker.copyactions.fragments.HistoryFragment;
-import com.adityathakker.copyactions.fragments.HomeFragment;
+import com.adityathakker.copyactions.ui.fragments.HistoryFragment;
+import com.adityathakker.copyactions.ui.fragments.HomeFragment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        /*sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.getBoolean(AppConst.SharedPrefs.IS_FIRST_TIME, true)) {
             Log.v(TAG, "onCreate: App Opened For The First Time");
             try {
@@ -78,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Log.e(TAG, "onCreate: IOException Occurred", e);
             }
-        }
+        }*/
 
 
         viewPager = (ViewPager) findViewById(R.id.content_home_view_pager);
@@ -124,4 +113,6 @@ public class HomeActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+
 }

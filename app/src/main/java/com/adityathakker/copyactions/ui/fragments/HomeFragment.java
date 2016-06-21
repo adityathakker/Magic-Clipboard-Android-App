@@ -1,4 +1,4 @@
-package com.adityathakker.copyactions.fragments;
+package com.adityathakker.copyactions.ui.fragments;
 
 import android.app.ActivityManager;
 import android.content.Context;

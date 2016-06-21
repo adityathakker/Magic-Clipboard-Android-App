@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.adityathakker.copyactions.activities.PopupActivity;
+import com.adityathakker.copyactions.ui.activities.PopupActivity;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,6 +19,11 @@ public class ClipboardService extends Service {
     private Context context;
     private String previousClip;
     private Date previousClipsTime;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,6 +45,8 @@ public class ClipboardService extends Service {
                     return;
                 } else {
                     if (!newClip.isEmpty()) {
+
+
                         Intent intent = new Intent(context, PopupActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
