@@ -1,8 +1,6 @@
 package com.adityathakker.copyactions.ui.activities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,14 +13,12 @@ import android.util.Log;
 
 import com.adityathakker.copyactions.AppConst;
 import com.adityathakker.copyactions.R;
+import com.adityathakker.copyactions.async.CopyAsync;
+import com.adityathakker.copyactions.interfaces.ICopyAsyncCallback;
 import com.adityathakker.copyactions.ui.fragments.HistoryFragment;
 import com.adityathakker.copyactions.ui.fragments.HomeFragment;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,79 +38,30 @@ public class HomeActivity extends AppCompatActivity {
 
         String dbPath = AppConst.DB.DB_PATH + AppConst.DB.DB_NAME;
         File databaseFile = new File(dbPath);
-        Log.v(TAG, "onCreate: Dictionary Path => " + databaseFile.getAbsolutePath());
+        Log.v(TAG, "doInBackground: Dictionary Path => " + databaseFile.getAbsolutePath());
         if (!databaseFile.exists()) {
-            try {
-                SQLiteDatabase checkDB = this.openOrCreateDatabase(AppConst.DB.DB_NAME, Context.MODE_PRIVATE, null);
-                if (checkDB != null) {
-                    checkDB.close();
+            Log.d(TAG, "onCreate: Database Does Not Exists");
+            CopyAsync copyAsync = new CopyAsync(this, new ICopyAsyncCallback() {
+                @Override
+                public void onCopyComplete() {
+                    setupHomeActivity();
                 }
+            });
+            copyAsync.execute();
 
-                InputStream inputStream = getApplicationContext().getAssets().open(AppConst.DB.DB_NAME);
-                OutputStream fileOutputStream = new FileOutputStream(dbPath);
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = inputStream.read(buffer)) > 0) {
-                    fileOutputStream.write(buffer, 0, length);
-                }
-                inputStream.close();
-                fileOutputStream.close();
-                Log.d(TAG, "onCreate: Dictionary File Has Been Copied");
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, "onCreate: Error Occurred While Copying", e);
-            }
         } else {
-            Log.d(TAG, "onCreate: Database File Already Exists");
+            Log.d(TAG, "onCreate: Database Already Exists");
+            setupHomeActivity();
         }
 
+    }
 
-        /*sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(AppConst.SharedPrefs.IS_FIRST_TIME, true)) {
-            Log.v(TAG, "onCreate: App Opened For The First Time");
-            try {
-                File databaseFile = this.getDatabasePath("copy_actions.db");
-                Log.v(TAG, "onCreate: Dictionary Path => " + databaseFile.getAbsolutePath());
-                if (!databaseFile.exists()) {
-                    Log.v(TAG, "onCreate: Dictionary File Does Not Exist");
-
-                    SQLiteDatabase checkDB = this.openOrCreateDatabase("copy_actions", Context.MODE_PRIVATE, null);
-                    if (checkDB != null) {
-                        checkDB.close();
-                    }
-
-                    InputStream inputStream = getAssets().open("copy_actions.db");
-                    OutputStream fileOutputStream = new FileOutputStream(databaseFile);
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(buffer)) > 0) {
-                        fileOutputStream.write(buffer, 0, length);
-                    }
-                    inputStream.close();
-                    fileOutputStream.close();
-                    Log.v(TAG, "onCreate: Dictionary File Has Been Copied");
-                } else {
-                    Log.v(TAG, "onCreate: File Already Exists");
-                }
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(AppConst.SharedPrefs.IS_FIRST_TIME, false);
-                editor.commit();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Log.e(TAG, "onCreate: FileNotFoundException Occurred", e);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "onCreate: IOException Occurred", e);
-            }
-        }*/
-
-
+    private void setupHomeActivity() {
         viewPager = (ViewPager) findViewById(R.id.content_home_view_pager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
