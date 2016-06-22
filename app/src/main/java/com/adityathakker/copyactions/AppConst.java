@@ -31,4 +31,9 @@ public abstract class AppConst {
 
 
     }
+
+    public static class RegEx {
+        public static final String URL_REGEX = "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$";
+        public static final String WORD_REGEX = "^\\b[\\S]+\\b$";
+    }
 }

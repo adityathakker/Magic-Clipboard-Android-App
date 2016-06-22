@@ -194,4 +194,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
+
+    public List<String> getMeanings(String word) {
+        String firstLetter = word.substring(0, 1);
+        String tableName = firstLetter + "_words";
+        openDatabase();
+        Cursor resultSet = sqLiteDatabase.query(tableName, new String[]{"meaning"}, "word=?", new String[]{word}, null, null, null, null);
+        String meaning = null;
+        List<String> stringList = new ArrayList<>();
+        if (resultSet.moveToFirst()) {
+            do {
+                meaning = resultSet.getString(0);
+                stringList.add(meaning);
+            } while (resultSet.moveToNext());
+            closeDatabase();
+            return stringList;
+        } else {
+            closeDatabase();
+            return null;
+        }
+    }
 }
