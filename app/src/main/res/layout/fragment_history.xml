@@ -5,10 +5,42 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.HomeActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f2f2f2"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Spinner
+            android:id="@+id/fragment_history_spinner_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="16dp" />
+
+        <Spinner
+            android:id="@+id/fragment_history_spinner_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="16dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/fragment_history_divider1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/linearLayout"
+        android:background="@color/divider" />
+
     <com.adityathakker.copyactions.ui.custom.RecyclerEmptyView
         android:id="@+id/fragment_history_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout" />
 
     <TextView
         android:id="@+id/fragment_history_textview_empty"

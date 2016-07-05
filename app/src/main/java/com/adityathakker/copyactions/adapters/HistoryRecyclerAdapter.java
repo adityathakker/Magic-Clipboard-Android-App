@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.adityathakker.copyactions.R;
 import com.adityathakker.copyactions.models.CopyRecord;
 import com.adityathakker.copyactions.ui.custom.RecyclerEmptyView;
+import com.adityathakker.copyactions.ui.fragments.HistoryFragment;
 import com.adityathakker.copyactions.utils.TimeAgo;
 
 import java.util.Date;
@@ -22,16 +23,20 @@ import java.util.List;
 
 public class HistoryRecyclerAdapter extends RecyclerEmptyView.Adapter<HistoryRecyclerAdapter.HistoryViewHolder> {
     public static final String TAG = HistoryRecyclerAdapter.class.getSimpleName();
+
     private Context context;
     private OnItemClickListener clickListener;
     private OnInfoClickListener infoClickListener;
     private List<CopyRecord> copyRecordList;
     private Date currentTime;
-
     public HistoryRecyclerAdapter(Context context, List<CopyRecord> copyRecordList) {
         this.context = context;
         this.copyRecordList = copyRecordList;
         currentTime = new Date();
+    }
+
+    public List<CopyRecord> getCopyRecordList() {
+        return copyRecordList;
     }
 
     public void setCopyRecordList(List<CopyRecord> copyRecordList) {
@@ -42,8 +47,10 @@ public class HistoryRecyclerAdapter extends RecyclerEmptyView.Adapter<HistoryRec
         copyRecordList.add(index, copyRecord);
     }
 
+
     public void removeCopyRecordFromList(int index) {
         copyRecordList.remove(index);
+        HistoryFragment.recyclerView.dataChanged();
     }
 
     public void replaceCopyRecordAt(CopyRecord copyRecord, int index) {
@@ -79,6 +86,11 @@ public class HistoryRecyclerAdapter extends RecyclerEmptyView.Adapter<HistoryRec
         this.infoClickListener = itemClickListener;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     //Click Listener Interface
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
@@ -87,7 +99,6 @@ public class HistoryRecyclerAdapter extends RecyclerEmptyView.Adapter<HistoryRec
     public interface OnInfoClickListener {
         public void onInfoClick(View view, int position);
     }
-
 
     class HistoryViewHolder extends RecyclerEmptyView.ViewHolder implements View.OnClickListener {
         TextView timeStamp, string;

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_CLIPS" />
     <uses-permission android:name="android.permission.WRITE_CLIPS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.PopupActivity"
+            android:name=".ui.activities.WordPopupActivity"
             android:theme="@style/PopupTheme" />
 
         <service android:name=".services.ClipboardService" />
@@ -33,6 +34,22 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.UninstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.InstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_INSTALL" />
+
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -44,6 +61,32 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.activities.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adityathakker.copyactions.ui.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activities.InstalledAppsActionsWordActivity"
+            android:label="@string/title_activity_actions_choose_word"
+            android:parentActivityName=".ui.activities.SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adityathakker.copyactions.ui.activities.SettingsActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activities.BuiltInActionsWordActivity"
+            android:label="@string/title_activity_built_in_actions_word"
+            android:parentActivityName=".ui.activities.SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adityathakker.copyactions.ui.activities.SettingsActivity" />
         </activity>
     </application>
 

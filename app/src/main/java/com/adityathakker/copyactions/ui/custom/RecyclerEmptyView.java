@@ -58,4 +58,6 @@ public class RecyclerEmptyView extends RecyclerView {
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }
+
+
 }

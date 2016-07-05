@@ -6,6 +6,20 @@ package com.adityathakker.copyactions;
 public abstract class AppConst {
     public static class SharedPrefs {
         public static final String IS_FIRST_TIME = "is_first_time";
+        public static final String POPUP_STYLE_KEY = "popupStyle";
+        public static final String DIALOG_POPUP_VALUE = "0";
+        public static final String NOTIF_POPUP_VALUE = "1";
+
+        //BuiltIn Actions
+        public static final String BUILT_IN_ACTIONS_SEARCH = "pref_popup_box_word_built_in_action_search";
+        public static final String BUILT_IN_ACTIONS_SHARE = "pref_popup_box_word_built_in_action_share";
+        public static final String BUILT_IN_ACTIONS_MAPS = "pref_popup_box_word_built_in_action_maps";
+        public static final String BUILT_IN_ACTIONS_TRANSLATE = "pref_popup_box_word_built_in_action_translate";
+        public static final String BUILT_IN_ACTIONS_SPEAK = "pref_popup_box_word_built_in_action_speak";
+    }
+
+    public static class RequestCodes {
+        public static final String NEW_RECORD_ADDED = "com.adityathakker.copyactions.newCopyRecordAdded";
     }
 
     public static class DB {
@@ -22,18 +36,27 @@ public abstract class AppConst {
         public static final String HISTORY_TIMESTAMP = "timestamp";
         public static final String HISTORY_IS_FAV = "is_fav";
 
-        public static final String CREATE_TABLE_HISTORY = "create table " + HISTORY_TABLE_NAME + "(" +
-                HISTORY_ID + " integer primary key autoincrement," +
-                HISTORY_STRING + " text," +
-                HISTORY_IS_FAV + " integer," +
-                HISTORY_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP)";
-        public static final String DROP_TABLE_HISTORY = "drop table if exists " + HISTORY_TABLE_NAME;
+
+        //Actions_Sent Table
+        public static final String ACTIONS_SENT_WORD_TABLE_NAME = "actions_sent_word";
+
+        public static final String ACTIONS_SENT_WORD_ID = "id";
+        public static final String ACTIONS_SENT_WORD_PACKAGE = "package_name";
+        public static final String ACTIONS_SENT_WORD_ACTIVITY = "activity_name";
+        public static final String ACTIONS_SENT_WORD_ENABLED = "enabled";
+
+
+
 
 
     }
 
     public static class RegEx {
-        public static final String URL_REGEX = "^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$";
+        public static final String URL_REGEX = "((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:ww\u200C\u200Bw.|[-;:&=\\+\\$,\\w]+@)[A-Za-z0-9.-]+)((?:\\/[\\+~%\\/.\\w-_]*)?\\??(?:[-\\+=&;%@.\\w_]*)#?\u200C\u200B(?:[\\w]*))?)";
         public static final String WORD_REGEX = "^\\b[\\S]+\\b$";
+    }
+
+    public static class APIKeys {
+        public static final String GOOGLE_URL_SHORTNER_API_KEY = "AIzaSyC1XAPi4haCC8rDCzOqSGyb0QTLiRaydUA";
     }
 }

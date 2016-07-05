@@ -1,7 +1,10 @@
 package com.adityathakker.copyactions.database;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -9,6 +12,7 @@ import android.util.Log;
 
 import com.adityathakker.copyactions.AppConst;
 import com.adityathakker.copyactions.models.CopyRecord;
+import com.adityathakker.copyactions.models.LocalApp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -112,11 +116,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<CopyRecord> getAllCopyRecords() {
+    public List<CopyRecord> getAllCopyRecords(String where, String whereArgs[], String orderBy) {
         List<CopyRecord> copyRecordList = new ArrayList<>();
         openDatabase();
         CopyRecord tempCopyRecord = null;
-        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, null, null, null, null, AppConst.DB.HISTORY_TIMESTAMP + " DESC");
+        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, where, whereArgs, null, null, orderBy);
         if (resultSet.moveToFirst()) {
             do {
                 try {
@@ -139,6 +143,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return copyRecordList;
     }
 
+    public int getTotalCopyRecords() {
+        openDatabase();
+        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, null, null, null, null, null);
+        int total = resultSet.getCount();
+        closeDatabase();
+        return total;
+    }
+
+    public int getTotalFavCopyRecords() {
+        openDatabase();
+        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, null, AppConst.DB.HISTORY_IS_FAV + "=?", new String[]{"1"}, null, null, null);
+        int total = resultSet.getCount();
+        closeDatabase();
+        return total;
+    }
+
     public Boolean isMarkedFav(long id) {
         openDatabase();
         Cursor results = sqLiteDatabase.query(AppConst.DB.HISTORY_TABLE_NAME, new String[]{AppConst.DB.HISTORY_IS_FAV}, "id=?", new String[]{Long.toString(id)}, null, null, null);
@@ -152,6 +172,92 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public void storeAllLocalAppsForSent(List<LocalApp> localAppList) {
+        openDatabase();
+        ContentValues contentValues = null;
+        for (LocalApp eachLocalApp : localAppList) {
+            contentValues = new ContentValues();
+            contentValues.put(AppConst.DB.ACTIONS_SENT_WORD_PACKAGE, eachLocalApp.getPackageName());
+            contentValues.put(AppConst.DB.ACTIONS_SENT_WORD_ACTIVITY, eachLocalApp.getActivityName());
+            contentValues.put(AppConst.DB.ACTIONS_SENT_WORD_ENABLED, eachLocalApp.getEnabled() ? 1 : 0);
+            sqLiteDatabase.insert(AppConst.DB.ACTIONS_SENT_WORD_TABLE_NAME, null, contentValues);
+        }
+        closeDatabase();
+    }
+
+    public void removeLocalAppWithPackage(String packageName) {
+        openDatabase();
+        sqLiteDatabase.delete(AppConst.DB.ACTIONS_SENT_WORD_TABLE_NAME, AppConst.DB.ACTIONS_SENT_WORD_PACKAGE + "=?", new String[]{packageName});
+        closeDatabase();
+    }
+
+    public List<LocalApp> getAllLocalAppsForSent() {
+        openDatabase();
+        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.ACTIONS_SENT_WORD_TABLE_NAME, null, null, null, null, null, null);
+        if (resultSet.moveToFirst()) {
+            PackageManager packageManager = context.getPackageManager();
+            List<LocalApp> localAppList = new ArrayList<>();
+            LocalApp localApp = null;
+            do {
+                String packageName = resultSet.getString(1);
+                String activityName = resultSet.getString(2);
+                try {
+                    ActivityInfo activityInfo = packageManager.getActivityInfo(new ComponentName(packageName, activityName), PackageManager.GET_META_DATA);
+                    localApp = new LocalApp(packageName, activityInfo.loadLabel(packageManager).toString(), resultSet.getString(2), activityInfo.loadIcon(packageManager), resultSet.getString(3).equals("1"));
+                    localAppList.add(localApp);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "getAllLocalAppsForSent: App Not Installed: " + packageName);
+                }
+            } while (resultSet.moveToNext());
+            closeDatabase();
+            return localAppList;
+        } else {
+            closeDatabase();
+            return null;
+        }
+    }
+
+    public List<LocalApp> getAllLocalAppsForSentEnabled() {
+        openDatabase();
+        Cursor resultSet = sqLiteDatabase.query(AppConst.DB.ACTIONS_SENT_WORD_TABLE_NAME, null, AppConst.DB.ACTIONS_SENT_WORD_ENABLED + "=?", new String[]{"1"}, null, null, null);
+        if (resultSet.moveToFirst()) {
+            PackageManager packageManager = context.getPackageManager();
+            List<LocalApp> localAppList = new ArrayList<>();
+            LocalApp localApp = null;
+            do {
+                String packageName = resultSet.getString(1);
+                String activityName = resultSet.getString(2);
+                try {
+                    ActivityInfo activityInfo = packageManager.getActivityInfo(new ComponentName(packageName, activityName), PackageManager.GET_META_DATA);
+                    localApp = new LocalApp(packageName, activityInfo.loadLabel(packageManager).toString(), resultSet.getString(2), activityInfo.loadIcon(packageManager), resultSet.getString(3).equals("1"));
+                    localAppList.add(localApp);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "getAllLocalAppsForSent: App Not Installed: " + packageName);
+                }
+            } while (resultSet.moveToNext());
+            closeDatabase();
+            return localAppList;
+        } else {
+            closeDatabase();
+            return null;
+        }
+    }
+
+    public void updateLocalApp(LocalApp localApp) {
+        openDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AppConst.DB.ACTIONS_SENT_WORD_ENABLED, localApp.getEnabled() ? 1 : 0);
+        long id = sqLiteDatabase.update(AppConst.DB.ACTIONS_SENT_WORD_TABLE_NAME, contentValues, AppConst.DB.ACTIONS_SENT_WORD_ACTIVITY + "=?", new String[]{localApp.getActivityName()});
+        if (id == -1) {
+            Log.d(TAG, "updateLocalApp: Something Went Wrong");
+        } else {
+            Log.d(TAG, "updateLocalApp: Done");
+        }
+        closeDatabase();
     }
 
     public CopyRecord getLatestCopyRecord() {

@@ -1,7 +1,9 @@
 package com.adityathakker.copyactions.ui.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,10 +15,12 @@ import com.adityathakker.copyactions.R;
 import com.adityathakker.copyactions.database.DatabaseHelper;
 import com.adityathakker.copyactions.models.CopyRecord;
 import com.adityathakker.copyactions.ui.fragments.HistoryFragment;
+import com.adityathakker.copyactions.ui.fragments.HomeFragment;
 import com.adityathakker.copyactions.utils.TimeAgo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DisplayCopyActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = DisplayCopyActivity.class.getSimpleName();
@@ -78,12 +82,36 @@ public class DisplayCopyActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.content_display_copy_button_delete:
-                databaseHelper.removedCopyRecord(copyRecord.getId());
-                Toast.makeText(DisplayCopyActivity.this, "Record Deleted", Toast.LENGTH_SHORT).show();
-                HistoryFragment.historyRecyclerAdapter.removeCopyRecordFromList(position);
-                HistoryFragment.historyRecyclerAdapter.notifyItemRemoved(position);
-                HistoryFragment.recyclerView.dataChanged();
-                finish();
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("Delete Record");
+                alertDialogBuilder.setMessage("Do you want to delete the copy record?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseHelper.removedCopyRecord(copyRecord.getId());
+                        Toast.makeText(DisplayCopyActivity.this, "Record Deleted", Toast.LENGTH_SHORT).show();
+                        HistoryFragment.historyRecyclerAdapter.removeCopyRecordFromList(position);
+                        HistoryFragment.historyRecyclerAdapter.notifyItemRemoved(position);
+                        if (copyRecord.getFav()) {
+                            HomeFragment.totalCopyRecords.setText((Integer.parseInt(HomeFragment.totalCopyRecords.getText().toString()) - 1) + "");
+                            HomeFragment.favCopyRecords.setText((Integer.parseInt(HomeFragment.favCopyRecords.getText().toString()) - 1) + "");
+                        } else {
+                            HomeFragment.totalCopyRecords.setText((Integer.parseInt(HomeFragment.totalCopyRecords.getText().toString()) - 1) + "");
+                        }
+                        CopyRecord tempCopyRecord = databaseHelper.getLatestCopyRecord();
+                        HomeFragment.latestCopyRecordTimeStamp.setText(TimeAgo.toDuration(new Date().getTime() - tempCopyRecord.getTimestamp().getTime()));
+                        HomeFragment.latestCopyRecordString.setText(tempCopyRecord.getString());
+                        finish();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialogBuilder.create().show();
+
                 break;
             case R.id.content_display_copy_button_share:
                 Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -100,6 +128,7 @@ public class DisplayCopyActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(DisplayCopyActivity.this, "Removed From Favorites", Toast.LENGTH_SHORT).show();
                     HistoryFragment.historyRecyclerAdapter.replaceCopyRecordAt(copyRecord, position);
                     HistoryFragment.historyRecyclerAdapter.notifyItemChanged(position);
+                    HomeFragment.favCopyRecords.setText((Integer.parseInt(HomeFragment.favCopyRecords.getText().toString()) - 1) + "");
                 } else {
                     copyRecord.setFav(true);
                     databaseHelper.markAsFavorite(copyRecord);
@@ -107,6 +136,8 @@ public class DisplayCopyActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(DisplayCopyActivity.this, "Added To Favorites", Toast.LENGTH_SHORT).show();
                     HistoryFragment.historyRecyclerAdapter.replaceCopyRecordAt(copyRecord, position);
                     HistoryFragment.historyRecyclerAdapter.notifyItemChanged(position);
+                    HomeFragment.favCopyRecords.setText((Integer.parseInt(HomeFragment.favCopyRecords.getText().toString()) + 1) + "");
+
                 }
                 break;
         }

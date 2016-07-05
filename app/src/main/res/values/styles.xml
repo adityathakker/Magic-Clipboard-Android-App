@@ -20,6 +20,8 @@
     <style name="PopupTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
 
         <!--TODO: Add Enter And Exit Animations For Dialog-->
     </style>
