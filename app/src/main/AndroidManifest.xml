@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.adityathakker.copyactions">
+    package="com.adityathakker.magicclipboard">
 
-    <uses-permission android:name="android.permission.GET_CLIPS" />
-    <uses-permission android:name="android.permission.READ_CLIPS" />
-    <uses-permission android:name="android.permission.WRITE_CLIPS" />
+    <uses-permission android:name="android.permission.GET_stringS" />
+    <uses-permission android:name="android.permission.READ_stringS" />
+    <uses-permission android:name="android.permission.WRITE_stringS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activities.HomeActivity"
+            android:name="com.adityathakker.magicclipboard.ui.activities.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,18 +25,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.WordPopupActivity"
+            android:name="com.adityathakker.magicclipboard.ui.activities.WordPopupActivity"
             android:theme="@style/PopupTheme" />
 
-        <service android:name=".services.ClipboardService" />
+        <activity
+            android:name="com.adityathakker.magicclipboard.ui.activities.SentencePopupActivity"
+            android:theme="@style/PopupTheme" />
 
-        <receiver android:name=".receivers.ClipboardMonitorStarter">
+        <service android:name="com.adityathakker.magicclipboard.services.ClipboardMonitorService" />
+
+        <receiver android:name="com.adityathakker.magicclipboard.receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.UninstallReceiver">
+        <receiver android:name="com.adityathakker.magicclipboard.receivers.AppUninstallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
@@ -44,7 +49,7 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.InstallReceiver">
+        <receiver android:name="com.adityathakker.magicclipboard.receivers.AppInstallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
@@ -54,39 +59,31 @@
         </receiver>
 
         <activity
-            android:name=".ui.activities.DisplayCopyActivity"
+            android:name="com.adityathakker.magicclipboard.ui.activities.DisplayClipboardLogActivity"
             android:label="@string/title_activity_display_copy"
-            android:parentActivityName=".ui.activities.HomeActivity"
+            android:parentActivityName="com.adityathakker.magicclipboard.ui.activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.HomeActivity" />
+                android:value="com.adityathakker.magicclipboard.ui.activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".ui.activities.SettingsActivity"
+            android:name="com.adityathakker.magicclipboard.ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.activities.HomeActivity">
+            android:parentActivityName="com.adityathakker.magicclipboard.ui.activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adityathakker.copyactions.ui.activities.HomeActivity" />
+                android:value="com.adityathakker.magicclipboard.ui.activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".ui.activities.InstalledAppsActionsWordActivity"
+            android:name="com.adityathakker.magicclipboard.ui.activities.SettingWordActionsActivity"
             android:label="@string/title_activity_actions_choose_word"
-            android:parentActivityName=".ui.activities.SettingsActivity"
+            android:parentActivityName="com.adityathakker.magicclipboard.ui.activities.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adityathakker.copyactions.ui.activities.SettingsActivity" />
-        </activity>
-        <activity
-            android:name=".ui.activities.BuiltInActionsWordActivity"
-            android:label="@string/title_activity_built_in_actions_word"
-            android:parentActivityName=".ui.activities.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adityathakker.copyactions.ui.activities.SettingsActivity" />
+                android:value="com.adityathakker.magicclipboard.ui.activities.SettingsActivity" />
         </activity>
     </application>
 

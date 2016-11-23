@@ -1,16 +1,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:disableDependentsState="false"
+        android:key="pref_popup_box_enable_disable"
+        android:summaryOff="Do not display Popup Box when you copy something"
+        android:summaryOn="Display Popup Box when you copy something"
+        android:title="Popup Box Feature" />
+
     <PreferenceCategory
         android:key="pref_popup_box_cat_word"
-        android:title="When Copied Text Is A WORD">
+        android:title="Copied Text is WORD">
 
         <SwitchPreference
             android:defaultValue="true"
             android:disableDependentsState="false"
             android:key="pref_popup_box_word_enable_disable"
-            android:summaryOff="Popup Box will not be displayed when copied text is a word"
-            android:summaryOn="Popup Box will be displayed when copied text is a word"
-            android:title="Display Popup Box" />
+            android:summaryOff="Popup Box will not be displayed when copied text is a word/sentence"
+            android:summaryOn="Popup Box will be displayed when copied text is a word/sentence"
+            android:title="Display Popup Box"
+            android:dependency="pref_popup_box_enable_disable"/>
 
         <SwitchPreference
             android:defaultValue="true"
@@ -26,28 +35,21 @@
             android:dependency="pref_popup_box_word_enable_disable"
             android:disableDependentsState="false"
             android:key="pref_popup_box_word_saving_enable_disable"
-            android:summaryOff="Copied Word will not be saved for late in clipboard history"
-            android:summaryOn="Copied Word will be saved for late in clipboard history"
+            android:summaryOff="Copied Word/Sentence will not be saved in clipboard history"
+            android:summaryOn="Copied Word/Sentence will be saved in clipboard history"
             android:title="Save In Clipboard History" />
+
 
     </PreferenceCategory>
 
     <Preference
-        android:summary="Select built-in apps actions that you want to see in popup"
-        android:title="Built-In Actions">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetClass="com.adityathakker.copyactions.ui.activities.BuiltInActionsWordActivity"
-            android:targetPackage="com.adityathakker.copyactions" />
-    </Preference>
-
-    <Preference
         android:summary="Select installed apps actions that you want to see in popup"
-        android:title="Installed Apps Actions">
+        android:title="Visible Popup Actions"
+        android:dependency="pref_popup_box_word_enable_disable">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.adityathakker.copyactions.ui.activities.InstalledAppsActionsWordActivity"
-            android:targetPackage="com.adityathakker.copyactions" />
+            android:targetClass="com.adityathakker.magicclipboard.ui.activities.SettingWordActionsActivity"
+            android:targetPackage="com.adityathakker.magicclipboard" />
     </Preference>
 
 </PreferenceScreen>

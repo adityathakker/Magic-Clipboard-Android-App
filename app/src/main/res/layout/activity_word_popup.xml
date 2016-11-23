@@ -2,148 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="350dp"
     android:orientation="vertical"
     tools:context=".ui.activities.WordPopupActivity">
 
-    <com.adityathakker.copyactions.ui.custom.RecyclerEmptyView
+    <com.adityathakker.magicclipboard.ui.custom.RecyclerEmptyView
         android:id="@+id/activity_word_popup_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!--<LinearLayout
-        android:id="@+id/activity_popup_first_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="4">
-
-        <TextView
-            android:id="@+id/activity_popup_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_share_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Share"
-            android:textColor="@color/popupColor" />
-
-        <TextView
-            android:id="@+id/activity_popup_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/activity_popup_share"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_search_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Search"
-            android:textColor="@color/popupColor" />
-
-        <TextView
-            android:id="@+id/activity_popup_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/activity_popup_search"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_near_me_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Map"
-            android:textColor="@color/popupColor" />
-
-        <TextView
-            android:id="@+id/activity_popup_translate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/activity_popup_map"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_translate_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Translate"
-            android:textColor="@color/popupColor" />
-
-        <TextView
-            android:id="@+id/activity_popup_open_in_browser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_open_in_browser_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Open"
-            android:textColor="@color/popupColor" />
-
-        <TextView
-            android:id="@+id/activity_popup_shorten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:drawableTint="@color/popupColor"
-            android:drawableTop="@drawable/ic_link_black_48dp"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:text="Shorten"
-            android:textColor="@color/popupColor" />
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/activity_popup_second_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-
-    </LinearLayout>-->
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/activity_popup_meaning_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <View
             android:id="@+id/activity_popup_divider1"
@@ -170,16 +41,15 @@
             android:layout_below="@id/activity_popup_support_meaning"
             android:background="@color/divider" />
 
-        <com.adityathakker.copyactions.ui.custom.RecyclerEmptyView
-            android:id="@+id/activity_popup_meaning_recyclerview"
+        <WebView
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:id="@+id/activity_popup_webview_meaning"
+            android:linksClickable="true"
+            android:isScrollContainer="true"
+            android:textIsSelectable="true"
             android:layout_below="@id/activity_popup_divider2"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp" />
-
+            android:scrollbars="vertical"/>
 
     </RelativeLayout>
 

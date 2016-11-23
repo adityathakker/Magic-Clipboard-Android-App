@@ -36,7 +36,7 @@
         android:layout_below="@id/linearLayout"
         android:background="@color/divider" />
 
-    <com.adityathakker.copyactions.ui.custom.RecyclerEmptyView
+    <com.adityathakker.magicclipboard.ui.custom.RecyclerEmptyView
         android:id="@+id/fragment_history_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

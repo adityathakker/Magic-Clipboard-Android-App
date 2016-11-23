@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.activities.SentencePopupActivity">
+
+    <com.adityathakker.magicclipboard.ui.custom.RecyclerEmptyView
+        android:id="@+id/activity_sent_popup_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <RelativeLayout
+        android:id="@+id/activity_sent_popup_display_copied_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/activity_sent_popup_divider1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/activity_sent_popup_support_meaning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_sent_popup_divider1"
+            android:background="#f2f2f2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="For Further Selection" />
+
+        <View
+            android:id="@+id/activity_sent_popup_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/activity_sent_popup_support_meaning"
+            android:background="@color/divider" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"
+            android:isScrollContainer="true"
+            android:maxHeight="250dp"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_below="@id/activity_sent_popup_divider2"
+            android:id="@+id/activity_sent_popup_textview_display_copied"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
